@@ -11,12 +11,12 @@ const config = {
   // 服务器配置
   server: {
     host: '127.0.0.1',
-    port: 8080
+    port: 8081
   },
   
   // 跨域配置
   cors: {
-    origin: env === 'development' ? 'http://localhost:3000' : false
+    origin: env === 'development' ? ['http://localhost:3000', 'http://localhost:3001'] : false
   },
   
   // 数据库配置
@@ -126,7 +126,7 @@ const config = {
 if (env === 'production') {
   // 生产环境配置
   config.server.host = process.env.HOST || '0.0.0.0';
-  config.server.port = process.env.PORT || 8080;
+  config.server.port = process.env.PORT || 8081;
   config.logging.level = 'info';
   config.logging.console.enabled = false;
 } else if (env === 'test') {

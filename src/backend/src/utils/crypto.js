@@ -84,8 +84,7 @@ class CryptoUtil {
       .digest();
     
     const iv = crypto.randomBytes(this.ivLength);
-    const cipher = crypto.createCipher('aes-256-cbc', keyDerivation);
-    cipher.setAutoPadding(true);
+    const cipher = crypto.createCipheriv('aes-256-cbc', keyDerivation, iv);
     
     let encrypted = cipher.update(masterKey);
     encrypted = Buffer.concat([encrypted, cipher.final()]);
@@ -104,8 +103,7 @@ class CryptoUtil {
     const iv = encryptedData.slice(0, this.ivLength);
     const encrypted = encryptedData.slice(this.ivLength);
     
-    const decipher = crypto.createDecipher('aes-256-cbc', keyDerivation);
-    decipher.setAutoPadding(true);
+    const decipher = crypto.createDecipheriv('aes-256-cbc', keyDerivation, iv);
     
     let decrypted = decipher.update(encrypted);
     decrypted = Buffer.concat([decrypted, decipher.final()]);
@@ -151,16 +149,13 @@ class CryptoUtil {
       const iv = this.generateIV();
       const derivedKey = this.generateKey(key, salt);
       
-      const cipher = crypto.createCipher(this.algorithm, derivedKey);
-      cipher.setAAD(salt); // 设置附加认证数据
+      const cipher = crypto.createCipheriv('aes-256-cbc', derivedKey, iv);
       
       let encrypted = cipher.update(text, 'utf8');
       encrypted = Buffer.concat([encrypted, cipher.final()]);
       
-      const tag = cipher.getAuthTag();
-      
-      // 合并 salt + iv + tag + encrypted
-      const result = Buffer.concat([salt, iv, tag, encrypted]);
+      // 合并 salt + iv + encrypted
+      const result = Buffer.concat([salt, iv, encrypted]);
       
       return result.toString('base64');
     } catch (error) {
@@ -180,14 +175,11 @@ class CryptoUtil {
       // 提取组件
       const salt = data.slice(0, this.saltLength);
       const iv = data.slice(this.saltLength, this.saltLength + this.ivLength);
-      const tag = data.slice(this.saltLength + this.ivLength, this.saltLength + this.ivLength + this.tagLength);
-      const encrypted = data.slice(this.saltLength + this.ivLength + this.tagLength);
+      const encrypted = data.slice(this.saltLength + this.ivLength);
       
       const derivedKey = this.generateKey(key, salt);
       
-      const decipher = crypto.createDecipher(this.algorithm, derivedKey);
-      decipher.setAuthTag(tag);
-      decipher.setAAD(salt);
+      const decipher = crypto.createDecipheriv('aes-256-cbc', derivedKey, iv);
       
       let decrypted = decipher.update(encrypted);
       decrypted = Buffer.concat([decrypted, decipher.final()]);

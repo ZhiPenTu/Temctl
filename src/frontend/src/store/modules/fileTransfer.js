@@ -5,7 +5,7 @@ export default {
     activeTransfers: [], // 活动传输列表
     transferHistory: [], // 传输历史
     currentDirectory: {
-      local: process.cwd ? process.cwd() : '/',
+      local: '/', // 默认本地目录
       remote: '/'
     },
     directoryContents: {

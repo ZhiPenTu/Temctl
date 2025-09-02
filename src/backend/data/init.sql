@@ -328,10 +328,10 @@ BEGIN
 END;
 
 -- AI会话更新时间触发器
-CREATE TRIGGER IF NOT EXISTS update_ai_sessions_timestamp 
-AFTER UPDATE ON ai_sessions
+CREATE TRIGGER IF NOT EXISTS update_ai_conversations_timestamp 
+AFTER UPDATE ON ai_conversations
 BEGIN
-    UPDATE ai_sessions SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
+    UPDATE ai_conversations SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
 END;
 
 -- 安全规则更新时间触发器

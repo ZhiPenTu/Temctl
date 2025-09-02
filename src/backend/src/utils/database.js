@@ -94,7 +94,9 @@ class Database {
    */
   async initTables() {
     try {
-      const initSqlPath = path.join(__dirname, '../data/init.sql');
+      const initSqlPath = path.join(__dirname, '../../data/init.sql');
+      
+      logger.info('查找初始化SQL文件:', initSqlPath);
       
       if (!fs.existsSync(initSqlPath)) {
         throw new Error('初始化SQL文件不存在');

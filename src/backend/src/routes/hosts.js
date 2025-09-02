@@ -1,9 +1,4 @@
 const Router = require('koa-router');
-const logger = require('../utils/logger');
-
-const router = new Router();
-
-const Router = require('koa-router');
 const { Host, HostGroup } = require('../models');
 const logger = require('../utils/logger');
 const crypto = require('../utils/crypto');

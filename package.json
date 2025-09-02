@@ -23,7 +23,7 @@
     "electron"
   ],
   "scripts": {
-    "dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\" \"wait-on http://localhost:5173 && electron .\"",
+    "dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\" \"wait-on http://localhost:3000 && electron .\"",
     "backend:dev": "cd src/backend && npm run dev",
     "frontend:dev": "cd src/frontend && npm run dev",
     "build": "npm run build:frontend && npm run build:backend",
