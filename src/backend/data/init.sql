@@ -107,42 +107,80 @@ CREATE INDEX IF NOT EXISTS idx_file_transfers_created_at ON file_transfers(creat
 -- ================================
 -- AI对话会话表
 -- ================================
-CREATE TABLE IF NOT EXISTS ai_sessions (
-    id TEXT PRIMARY KEY,
-    host_id TEXT, -- 可选，关联的主机
+CREATE TABLE IF NOT EXISTS ai_conversations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT,
     provider TEXT CHECK(provider IN ('openai', 'local', 'claude', 'gemini')) DEFAULT 'openai',
-    model TEXT NOT NULL,
-    context TEXT, -- JSON格式存储会话上下文
+    model TEXT NOT NULL DEFAULT 'gpt-3.5-turbo',
+    status TEXT CHECK(status IN ('active', 'archived', 'deleted')) DEFAULT 'active',
+    message_count INTEGER DEFAULT 0,
+    total_tokens INTEGER DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (host_id) REFERENCES hosts(id) ON DELETE SET NULL
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- 创建AI会话索引
-CREATE INDEX IF NOT EXISTS idx_ai_sessions_host_id ON ai_sessions(host_id);
-CREATE INDEX IF NOT EXISTS idx_ai_sessions_provider ON ai_sessions(provider);
-CREATE INDEX IF NOT EXISTS idx_ai_sessions_updated_at ON ai_sessions(updated_at);
+-- 创建AI对话索引
+CREATE INDEX IF NOT EXISTS idx_ai_conversations_provider ON ai_conversations(provider);
+CREATE INDEX IF NOT EXISTS idx_ai_conversations_status ON ai_conversations(status);
+CREATE INDEX IF NOT EXISTS idx_ai_conversations_updated_at ON ai_conversations(updated_at);
 
 -- ================================
 -- AI对话消息表
 -- ================================
 CREATE TABLE IF NOT EXISTS ai_messages (
-    id TEXT PRIMARY KEY,
-    session_id TEXT NOT NULL,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    conversation_id INTEGER NOT NULL,
     role TEXT CHECK(role IN ('user', 'assistant', 'system')) NOT NULL,
     content TEXT NOT NULL,
     metadata TEXT, -- JSON格式存储额外元数据
     tokens_used INTEGER,
     response_time INTEGER, -- 响应时间(毫秒)
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (session_id) REFERENCES ai_sessions(id) ON DELETE CASCADE
+    FOREIGN KEY (conversation_id) REFERENCES ai_conversations(id) ON DELETE CASCADE
 );
 
 -- 创建AI消息索引
-CREATE INDEX IF NOT EXISTS idx_ai_messages_session_id ON ai_messages(session_id);
+CREATE INDEX IF NOT EXISTS idx_ai_messages_conversation_id ON ai_messages(conversation_id);
 CREATE INDEX IF NOT EXISTS idx_ai_messages_role ON ai_messages(role);
 CREATE INDEX IF NOT EXISTS idx_ai_messages_created_at ON ai_messages(created_at);
+
+-- ================================
+-- 命令转换历史表
+-- ================================
+CREATE TABLE IF NOT EXISTS command_history (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    original_text TEXT NOT NULL, -- 原始自然语言输入
+    translated_command TEXT, -- 转换后的命令
+    method TEXT CHECK(method IN ('template', 'ai')) NOT NULL, -- 转换方法
+    confidence REAL, -- 置信度 0-1
+    session_id TEXT, -- 关联的会话ID
+    host_id TEXT, -- 关联的主机ID（可选）
+    executed BOOLEAN DEFAULT FALSE, -- 是否已执行
+    execution_result TEXT, -- 执行结果
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (host_id) REFERENCES hosts(id) ON DELETE SET NULL
+);
+
+-- 创建命令历史索引
+CREATE INDEX IF NOT EXISTS idx_command_history_method ON command_history(method);
+CREATE INDEX IF NOT EXISTS idx_command_history_session_id ON command_history(session_id);
+CREATE INDEX IF NOT EXISTS idx_command_history_host_id ON command_history(host_id);
+CREATE INDEX IF NOT EXISTS idx_command_history_created_at ON command_history(created_at);
+
+-- ================================
+-- 密钥密码短语表
+-- ================================
+CREATE TABLE IF NOT EXISTS key_passphrases (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    host_id TEXT UNIQUE NOT NULL,
+    encrypted_passphrase TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (host_id) REFERENCES hosts(id) ON DELETE CASCADE
+);
+
+-- 创建密码短语索引
+CREATE INDEX IF NOT EXISTS idx_key_passphrases_host_id ON key_passphrases(host_id);
 
 -- ================================
 -- 安全规则表

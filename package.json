@@ -1,88 +1,225 @@
 {
   "name": "temctl",
   "version": "1.0.0",
-  "description": "跨平台AI终端工具 - 集成SSH管理、文件传输、AI交互和安全管控功能",
-  "main": "src/main/main.js",
-  "scripts": {
-    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
-    "dev:backend": "cd src/backend && npm run dev",
-    "dev:frontend": "cd src/frontend && npm run dev",
-    "start": "electron src/main/main.js",
-    "build": "npm run build:backend && npm run build:frontend",
-    "build:backend": "cd src/backend && npm run build",
-    "build:frontend": "cd src/frontend && npm run build",
-    "pack": "electron-builder",
-    "pack:all": "electron-builder --mac --win --linux",
-    "test": "jest",
-    "test:unit": "jest src/**/*.test.js",
-    "lint": "eslint src --ext .js,.vue"
+  "description": "跨平台AI终端工具 - 集成SSH连接管理、文件传输、AI助手等功能",
+  "main": "main.js",
+  "homepage": "https://temctl.com",
+  "author": {
+    "name": "Temctl Team",
+    "email": "hello@temctl.com",
+    "url": "https://temctl.com"
   },
-  "keywords": [
-    "ssh",
-    "terminal",
-    "ai",
-    "ftp",
-    "cross-platform",
-    "electron",
-    "security"
-  ],
-  "author": "ZhiPenTu",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ZhiPenTu/Temctl.git"
+    "url": "https://github.com/username/temctl.git"
   },
-  "devDependencies": {
-    "electron": "^27.0.0",
-    "electron-builder": "^24.6.4",
-    "concurrently": "^8.2.2",
-    "jest": "^29.7.0",
-    "eslint": "^8.52.0",
-    "eslint-plugin-vue": "^9.17.0"
-  },
-  "dependencies": {
-    "ssh2": "^1.15.0",
-    "sqlite3": "^5.1.6",
-    "crypto-js": "^4.2.0",
-    "winston": "^3.11.0",
-    "axios": "^1.6.0"
+  "keywords": [
+    "terminal",
+    "ssh",
+    "ai",
+    "file-transfer",
+    "cross-platform",
+    "electron"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\" \"wait-on http://localhost:5173 && electron .\"",
+    "backend:dev": "cd src/backend && npm run dev",
+    "frontend:dev": "cd src/frontend && npm run dev",
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "cd src/frontend && npm run build",
+    "build:backend": "cd src/backend && npm run build",
+    "electron": "electron .",
+    "electron:dev": "NODE_ENV=development electron .",
+    "electron:build": "electron-builder",
+    "electron:build:win": "electron-builder --win",
+    "electron:build:mac": "electron-builder --mac",
+    "electron:build:linux": "electron-builder --linux",
+    "electron:build:all": "electron-builder --win --mac --linux",
+    "pack": "electron-builder --dir",
+    "dist": "npm run build && electron-builder",
+    "dist:win": "npm run build && electron-builder --win",
+    "dist:mac": "npm run build && electron-builder --mac",
+    "dist:linux": "npm run build && electron-builder --linux",
+    "publish": "npm run build && electron-builder --publish=always",
+    "test": "cd tests && npm test",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "prepare": "husky install"
   },
   "build": {
-    "appId": "com.zhipentu.temctl",
+    "appId": "com.temctl.app",
     "productName": "Temctl",
+    "copyright": "Copyright © 2024 Temctl Team",
     "directories": {
-      "output": "dist"
+      "output": "dist",
+      "buildResources": "build"
     },
     "files": [
-      "src/main/**/*",
-      "src/backend/dist/**/*",
+      "main.js",
+      "preload.js",
       "src/frontend/dist/**/*",
-      "node_modules/**/*"
+      "src/backend/dist/**/*",
+      "assets/**/*",
+      "node_modules/**/*",
+      "!node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+      "!node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
+      "!node_modules/*.d.ts",
+      "!node_modules/.bin",
+      "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
+      "!.editorconfig",
+      "!**/._*",
+      "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
+      "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
+      "!**/{appveyor.yml,.travis.yml,circle.yml}",
+      "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}"
     ],
-    "mac": {
-      "category": "public.app-category.developer-tools",
-      "target": [
-        {
-          "target": "dmg",
-          "arch": ["x64", "arm64"]
-        }
-      ]
-    },
+    "extraResources": [
+      {
+        "from": "src/backend/data/init.sql",
+        "to": "backend/data/"
+      }
+    ],
+    "afterSign": "build/notarize.js",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "username",
+        "repo": "temctl"
+      }
+    ],
     "win": {
       "target": [
         {
           "target": "nsis",
           "arch": ["x64", "ia32"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64", "ia32"]
         }
-      ]
+      ],
+      "icon": "build/icon.ico",
+      "publisherName": "Temctl Team",
+      "verifyUpdateCodeSignature": false,
+      "requestedExecutionLevel": "asInvoker"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "installerHeaderIcon": "build/icon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Temctl",
+      "include": "build/installer.nsh"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        },
+        {
+          "target": "zip",
+          "arch": ["x64", "arm64"]
+        }
+      ],
+      "icon": "build/icon.icns",
+      "category": "public.app-category.developer-tools",
+      "hardenedRuntime": true,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "gatekeeperAssess": false
+    },
+    "dmg": {
+      "title": "Temctl ${version}",
+      "icon": "build/icon.icns",
+      "iconSize": 100,
+      "contents": [
+        {
+          "x": 380,
+          "y": 280,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 110,
+          "y": 280,
+          "type": "file"
+        }
+      ],
+      "window": {
+        "width": 540,
+        "height": 380
+      }
     },
     "linux": {
       "target": [
         {
           "target": "AppImage",
+          "arch": ["x64", "arm64"]
+        },
+        {
+          "target": "deb",
+          "arch": ["x64", "arm64"]
+        },
+        {
+          "target": "rpm",
+          "arch": ["x64", "arm64"]
+        },
+        {
+          "target": "snap",
           "arch": ["x64"]
         }
+      ],
+      "icon": "build/icons/",
+      "category": "Development",
+      "synopsis": "跨平台AI终端工具",
+      "description": "集成SSH连接管理、文件传输、AI助手等功能的现代化终端工具"
+    },
+    "snap": {
+      "grade": "stable",
+      "summary": "跨平台AI终端工具",
+      "plugs": [
+        "default",
+        "network",
+        "network-bind",
+        "home",
+        "removable-media",
+        "desktop",
+        "desktop-legacy"
+      ]
+    },
+    "deb": {
+      "depends": [
+        "libgtk-3-0",
+        "libxss1",
+        "libasound2"
+      ]
+    },
+    "rpm": {
+      "depends": [
+        "gtk3",
+        "libXScrnSaver",
+        "alsa-lib"
       ]
     }
+  },
+  "devDependencies": {
+    "electron": "^22.3.27",
+    "electron-builder": "^24.6.4",
+    "electron-notarize": "^1.2.2",
+    "electron-is-dev": "^2.0.0",
+    "concurrently": "^8.2.2",
+    "wait-on": "^7.0.1",
+    "husky": "^8.0.3",
+    "eslint": "^8.54.0",
+    "prettier": "^3.1.0"
+  },
+  "dependencies": {
+    "electron-updater": "^6.1.4"
   }
 }

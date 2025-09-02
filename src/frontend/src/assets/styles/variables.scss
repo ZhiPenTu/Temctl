@@ -1,0 +1,145 @@
+// CSS 变量定义 - 支持明亮和暗色主题
+
+:root {
+  // 颜色系统
+  --primary-color: #409eff;
+  --primary-light: #79bbff;
+  --primary-dark: #337ecc;
+  
+  --success-color: #67c23a;
+  --warning-color: #e6a23c;
+  --danger-color: #f56c6c;
+  --info-color: #909399;
+  
+  // 文本颜色
+  --text-color-primary: #303133;
+  --text-color-regular: #606266;
+  --text-color-secondary: #909399;
+  --text-color-placeholder: #c0c4cc;
+  
+  // 背景颜色
+  --bg-color: #ffffff;
+  --bg-color-page: #f2f3f5;
+  --bg-color-overlay: #ffffff;
+  
+  // 边框颜色
+  --border-color: #dcdfe6;
+  --border-color-light: #e4e7ed;
+  --border-color-lighter: #ebeef5;
+  --border-color-extra-light: #f2f6fc;
+  
+  // 填充颜色
+  --fill-color: #f0f2f5;
+  --fill-color-light: #f5f7fa;
+  --fill-color-lighter: #fafafa;
+  --fill-color-extra-light: #fafcff;
+  --fill-color-dark: #ebedf0;
+  --fill-color-darker: #e6e8eb;
+  
+  // 阴影
+  --box-shadow-base: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+  --box-shadow-light: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  --box-shadow-dark: 0 4px 20px rgba(0, 0, 0, 0.15);
+  
+  // 间距
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-xxl: 48px;
+  
+  // 字体大小
+  --font-size-extra-small: 10px;
+  --font-size-small: 12px;
+  --font-size-base: 14px;
+  --font-size-medium: 16px;
+  --font-size-large: 18px;
+  --font-size-extra-large: 20px;
+  
+  // 圆角
+  --border-radius-base: 4px;
+  --border-radius-small: 2px;
+  --border-radius-round: 20px;
+  --border-radius-circle: 50%;
+  
+  // 过渡动画
+  --transition-duration: 0.3s;
+  --transition-function: cubic-bezier(0.645, 0.045, 0.355, 1);
+  
+  // 层级
+  --z-index-normal: 1;
+  --z-index-top: 1000;
+  --z-index-popper: 2000;
+  --z-index-message: 3000;
+}
+
+// 暗色主题
+.dark {
+  --text-color-primary: #e5eaf3;
+  --text-color-regular: #cfd3dc;
+  --text-color-secondary: #a3a6ad;
+  --text-color-placeholder: #8d9095;
+  
+  --bg-color: #141414;
+  --bg-color-page: #0a0a0a;
+  --bg-color-overlay: #1d1e1f;
+  
+  --border-color: #4c4d4f;
+  --border-color-light: #414243;
+  --border-color-lighter: #363637;
+  --border-color-extra-light: #2b2b2c;
+  
+  --fill-color: #2b2b2c;
+  --fill-color-light: #262727;
+  --fill-color-lighter: #1d1d1d;
+  --fill-color-extra-light: #191919;
+  --fill-color-dark: #303030;
+  --fill-color-darker: #363636;
+  
+  --box-shadow-base: 0 2px 4px rgba(0, 0, 0, 0.48), 0 0 6px rgba(0, 0, 0, 0.16);
+  --box-shadow-light: 0 2px 12px 0 rgba(0, 0, 0, 0.4);
+  --box-shadow-dark: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+// Element Plus 主题变量覆盖
+:root {
+  --el-color-primary: var(--primary-color);
+  --el-color-success: var(--success-color);
+  --el-color-warning: var(--warning-color);
+  --el-color-danger: var(--danger-color);
+  --el-color-info: var(--info-color);
+  
+  --el-text-color-primary: var(--text-color-primary);
+  --el-text-color-regular: var(--text-color-regular);
+  --el-text-color-secondary: var(--text-color-secondary);
+  --el-text-color-placeholder: var(--text-color-placeholder);
+  
+  --el-bg-color: var(--bg-color);
+  --el-bg-color-page: var(--bg-color-page);
+  --el-bg-color-overlay: var(--bg-color-overlay);
+  
+  --el-border-color: var(--border-color);
+  --el-border-color-light: var(--border-color-light);
+  --el-border-color-lighter: var(--border-color-lighter);
+  --el-border-color-extra-light: var(--border-color-extra-light);
+  
+  --el-fill-color: var(--fill-color);
+  --el-fill-color-light: var(--fill-color-light);
+  --el-fill-color-lighter: var(--fill-color-lighter);
+  --el-fill-color-extra-light: var(--fill-color-extra-light);
+  --el-fill-color-dark: var(--fill-color-dark);
+  --el-fill-color-darker: var(--fill-color-darker);
+  
+  --el-box-shadow-base: var(--box-shadow-base);
+  --el-box-shadow-light: var(--box-shadow-light);
+  --el-box-shadow-dark: var(--box-shadow-dark);
+  
+  --el-border-radius-base: var(--border-radius-base);
+  --el-border-radius-small: var(--border-radius-small);
+  --el-border-radius-round: var(--border-radius-round);
+  --el-border-radius-circle: var(--border-radius-circle);
+  
+  --el-transition-duration: var(--transition-duration);
+  --el-transition-function-ease-in-out-bezier: var(--transition-function);
+}

@@ -5,7 +5,7 @@ import store from './store';
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
 import * as ElementPlusIconsVue from '@element-plus/icons-vue';
-import './styles/index.scss';
+import './assets/styles/global.scss';
 
 // 创建Vue应用实例
 const app = createApp(App);

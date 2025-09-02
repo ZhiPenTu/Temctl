@@ -3,6 +3,8 @@ const hostsRouter = require('./hosts');
 const sshRouter = require('./ssh');
 const ftpRouter = require('./ftp');
 const aiRouter = require('./ai');
+const commandsRouter = require('./commands');
+const authRouter = require('./auth');
 const securityRouter = require('./security');
 const logsRouter = require('./logs');
 const settingsRouter = require('./settings');
@@ -23,6 +25,8 @@ router.get('/', async (ctx) => {
       '/api/ssh - SSH连接管理',
       '/api/ftp - 文件传输',
       '/api/ai - AI交互',
+      '/api/commands - 命令转换',
+      '/api/auth - 身份认证',
       '/api/security - 安全管控',
       '/api/logs - 操作日志',
       '/api/settings - 设置管理'
@@ -35,6 +39,8 @@ router.use('/hosts', hostsRouter.routes(), hostsRouter.allowedMethods());
 router.use('/ssh', sshRouter.routes(), sshRouter.allowedMethods());
 router.use('/ftp', ftpRouter.routes(), ftpRouter.allowedMethods());
 router.use('/ai', aiRouter.routes(), aiRouter.allowedMethods());
+router.use('/commands', commandsRouter.routes(), commandsRouter.allowedMethods());
+router.use('/auth', authRouter.routes(), authRouter.allowedMethods());
 router.use('/security', securityRouter.routes(), securityRouter.allowedMethods());
 router.use('/logs', logsRouter.routes(), logsRouter.allowedMethods());
 router.use('/settings', settingsRouter.routes(), settingsRouter.allowedMethods());

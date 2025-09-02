@@ -1,0 +1,36 @@
+{
+  "name": "temctl-tests",
+  "version": "1.0.0",
+  "description": "Test suite for Temctl application",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:backend": "jest --testPathPattern=backend",
+    "test:frontend": "jest --testPathPattern=frontend",
+    "test:e2e": "playwright test",
+    "test:integration": "jest --testPathPattern=integration"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/**/*.test.js",
+      "!src/**/node_modules/**"
+    ],
+    "coverageDirectory": "coverage",
+    "coverageReporters": ["text", "lcov", "html"],
+    "testMatch": [
+      "**/__tests__/**/*.js",
+      "**/?(*.)+(spec|test).js"
+    ],
+    "setupFilesAfterEnv": ["<rootDir>/tests/setup.js"]
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "@vue/test-utils": "^2.4.0",
+    "supertest": "^6.3.3",
+    "playwright": "^1.40.0",
+    "sqlite3": "^5.1.6"
+  }
+}
