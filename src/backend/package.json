@@ -1,0 +1,51 @@
+{
+  "name": "temctl-backend",
+  "version": "1.0.0",
+  "description": "Temctl后端服务 - Node.js + Koa.js",
+  "main": "src/app.js",
+  "scripts": {
+    "dev": "nodemon src/app.js",
+    "start": "node src/app.js",
+    "build": "echo 'No build step required for Node.js'",
+    "test": "jest",
+    "lint": "eslint src --ext .js --fix"
+  },
+  "dependencies": {
+    "koa": "^2.14.2",
+    "koa-router": "^12.0.1",
+    "koa-cors": "^0.0.16",
+    "koa-bodyparser": "^4.4.1",
+    "koa-logger": "^3.2.1",
+    "koa-static": "^5.0.0",
+    "koa-json": "^2.0.2",
+    "koa-helmet": "^7.0.2",
+    "ssh2": "^1.15.0",
+    "node-ftp": "^0.3.10",
+    "sqlite3": "^5.1.6",
+    "crypto-js": "^4.2.0",
+    "winston": "^3.11.0",
+    "axios": "^1.6.0",
+    "socket.io": "^4.7.4",
+    "jsonwebtoken": "^9.0.2",
+    "bcryptjs": "^2.4.3",
+    "joi": "^17.11.0",
+    "node-schedule": "^2.1.1",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3",
+    "eslint": "^8.52.0"
+  },
+  "keywords": [
+    "ssh",
+    "terminal",
+    "ai",
+    "ftp",
+    "koa",
+    "nodejs"
+  ],
+  "author": "ZhiPenTu",
+  "license": "MIT"
+}

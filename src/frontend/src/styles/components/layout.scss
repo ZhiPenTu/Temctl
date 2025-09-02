@@ -1,0 +1,300 @@
+// 布局组件样式
+.app-layout {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+// 标题栏样式
+.title-bar {
+  height: 40px;
+  background: var(--bg-color-overlay);
+  border-bottom: 1px solid var(--border-color-lighter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-md);
+  user-select: none;
+  -webkit-app-region: drag;
+  
+  .title {
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--text-color-primary);
+  }
+  
+  .window-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    -webkit-app-region: no-drag;
+    
+    .control-btn {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: opacity var(--transition-duration);
+      
+      &:hover {
+        opacity: 0.8;
+      }
+      
+      &.close {
+        background: #ff5f57;
+      }
+      
+      &.minimize {
+        background: #ffbd2e;
+      }
+      
+      &.maximize {
+        background: #28ca42;
+      }
+    }
+  }
+}
+
+// 侧边栏样式
+.sidebar {
+  width: 240px;
+  background: var(--bg-color-overlay);
+  border-right: 1px solid var(--border-color-lighter);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 24px; // 为状态栏留空间
+  z-index: var(--z-index-normal);
+  transition: all var(--transition-duration);
+  
+  &.collapsed {
+    width: 60px;
+    
+    .nav-item .nav-text {
+      display: none;
+    }
+    
+    .logo .logo-text {
+      display: none;
+    }
+  }
+  
+  .logo {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 var(--space-lg);
+    border-bottom: 1px solid var(--border-color-lighter);
+    
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--border-radius-base);
+      background: var(--primary-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    
+    .logo-text {
+      margin-left: var(--space-md);
+      font-size: var(--font-size-large);
+      font-weight: 600;
+      color: var(--text-color-primary);
+    }
+  }
+  
+  .nav-menu {
+    flex: 1;
+    padding: var(--space-md) 0;
+    overflow-y: auto;
+    
+    .nav-item {
+      display: flex;
+      align-items: center;
+      height: 48px;
+      padding: 0 var(--space-lg);
+      margin: 0 var(--space-md);
+      border-radius: var(--border-radius-base);
+      color: var(--text-color-regular);
+      cursor: pointer;
+      transition: all var(--transition-duration);
+      text-decoration: none;
+      
+      &:hover {
+        background: var(--fill-color-light);
+        color: var(--text-color-primary);
+      }
+      
+      &.active {
+        background: var(--primary-color);
+        color: white;
+      }
+      
+      .nav-icon {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        .el-icon {
+          font-size: 16px;
+        }
+      }
+      
+      .nav-text {
+        margin-left: var(--space-md);
+        font-size: var(--font-size-base);
+        white-space: nowrap;
+        overflow: hidden;
+      }
+      
+      .nav-badge {
+        margin-left: auto;
+        background: var(--danger-color);
+        color: white;
+        font-size: 12px;
+        padding: 2px 6px;
+        border-radius: 10px;
+        min-width: 18px;
+        text-align: center;
+      }
+    }
+  }
+  
+  .sidebar-footer {
+    padding: var(--space-md);
+    border-top: 1px solid var(--border-color-lighter);
+    
+    .toggle-btn {
+      width: 100%;
+      height: 36px;
+      border: none;
+      background: var(--fill-color-light);
+      color: var(--text-color-regular);
+      border-radius: var(--border-radius-base);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-duration);
+      
+      &:hover {
+        background: var(--fill-color);
+        color: var(--text-color-primary);
+      }
+    }
+  }
+}
+
+// 主内容区域
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: 240px;
+  margin-bottom: 24px; // 为状态栏留空间
+  transition: margin-left var(--transition-duration);
+  
+  &.sidebar-collapsed {
+    margin-left: 60px;
+  }
+}
+
+// 状态栏样式
+.status-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  background: var(--bg-color-overlay);
+  border-top: 1px solid var(--border-color-lighter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-md);
+  font-size: var(--font-size-extra-small);
+  color: var(--text-color-secondary);
+  z-index: var(--z-index-top);
+  
+  .status-left {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      
+      .status-indicator {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        
+        &.connected {
+          background: var(--success-color);
+        }
+        
+        &.connecting {
+          background: var(--warning-color);
+          animation: pulse 2s infinite;
+        }
+        
+        &.disconnected {
+          background: var(--danger-color);
+        }
+      }
+    }
+  }
+  
+  .status-right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    
+    .status-item {
+      cursor: pointer;
+      
+      &:hover {
+        color: var(--text-color-regular);
+      }
+    }
+  }
+}
+
+// 动画
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    
+    &.mobile-open {
+      transform: translateX(0);
+    }
+  }
+  
+  .main-content {
+    margin-left: 0;
+  }
+}

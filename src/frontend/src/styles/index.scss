@@ -1,0 +1,8 @@
+// 导入变量和基础样式
+@import './variables.scss';
+
+// 组件样式
+@import './components/layout.scss';
+@import './components/terminal.scss';
+@import './components/file-browser.scss';
+@import './components/ai-chat.scss';

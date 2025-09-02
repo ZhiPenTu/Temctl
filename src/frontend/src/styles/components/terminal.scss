@@ -1,0 +1,228 @@
+// 终端组件样式
+.terminal-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-color);
+  
+  .terminal-header {
+    height: 48px;
+    background: var(--bg-color-overlay);
+    border-bottom: 1px solid var(--border-color-lighter);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--space-lg);
+    
+    .connection-info {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      
+      .host-name {
+        font-weight: 500;
+        color: var(--text-color-primary);
+      }
+      
+      .connection-status {
+        display: flex;
+        align-items: center;
+        gap: var(--space-xs);
+        
+        .status-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          
+          &.connected {
+            background: var(--success-color);
+          }
+          
+          &.connecting {
+            background: var(--warning-color);
+          }
+          
+          &.disconnected {
+            background: var(--danger-color);
+          }
+        }
+        
+        .status-text {
+          font-size: var(--font-size-small);
+          color: var(--text-color-secondary);
+        }
+      }
+    }
+    
+    .terminal-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      
+      .action-btn {
+        width: 32px;
+        height: 32px;
+        border: none;
+        background: transparent;
+        border-radius: var(--border-radius-base);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-color-secondary);
+        transition: all var(--transition-duration);
+        
+        &:hover {
+          background: var(--fill-color-light);
+          color: var(--text-color-primary);
+        }
+      }
+    }
+  }
+  
+  .terminal-content {
+    flex: 1;
+    padding: var(--space-md);
+    overflow: hidden;
+    
+    .xterm-viewport {
+      background: transparent !important;
+    }
+    
+    .xterm-screen {
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    }
+  }
+  
+  .terminal-input {
+    height: 48px;
+    background: var(--bg-color-overlay);
+    border-top: 1px solid var(--border-color-lighter);
+    display: flex;
+    align-items: center;
+    padding: 0 var(--space-lg);
+    
+    .command-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--text-color-primary);
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: var(--font-size-base);
+      
+      &::placeholder {
+        color: var(--text-color-placeholder);
+      }
+    }
+    
+    .send-btn {
+      margin-left: var(--space-md);
+      padding: var(--space-sm) var(--space-lg);
+      border: none;
+      background: var(--primary-color);
+      color: white;
+      border-radius: var(--border-radius-base);
+      cursor: pointer;
+      font-size: var(--font-size-small);
+      transition: all var(--transition-duration);
+      
+      &:hover {
+        background: #337ecc;
+      }
+      
+      &:disabled {
+        background: var(--fill-color);
+        color: var(--text-color-placeholder);
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+// 终端标签页样式
+.terminal-tabs {
+  .el-tabs__header {
+    margin: 0;
+    background: var(--bg-color-overlay);
+    border-bottom: 1px solid var(--border-color-lighter);
+  }
+  
+  .el-tabs__nav-wrap {
+    padding: 0 var(--space-lg);
+  }
+  
+  .el-tabs__item {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 var(--space-lg);
+    
+    .tab-label {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      
+      .tab-icon {
+        width: 16px;
+        height: 16px;
+        
+        &.connected {
+          color: var(--success-color);
+        }
+        
+        &.connecting {
+          color: var(--warning-color);
+        }
+        
+        &.disconnected {
+          color: var(--danger-color);
+        }
+      }
+      
+      .tab-text {
+        font-size: var(--font-size-small);
+      }
+    }
+  }
+  
+  .el-tabs__content {
+    height: calc(100vh - 40px - 48px - 24px); // 减去标签高度、顶部工具栏和状态栏
+  }
+}
+
+// 命令历史样式
+.command-history {
+  max-height: 200px;
+  overflow-y: auto;
+  background: var(--bg-color-overlay);
+  border: 1px solid var(--border-color-lighter);
+  border-radius: var(--border-radius-base);
+  box-shadow: var(--box-shadow-light);
+  
+  .history-item {
+    padding: var(--space-sm) var(--space-md);
+    cursor: pointer;
+    border-bottom: 1px solid var(--border-color-extra-light);
+    transition: all var(--transition-duration);
+    
+    &:hover {
+      background: var(--fill-color-light);
+    }
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    .command-text {
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: var(--font-size-small);
+      color: var(--text-color-primary);
+    }
+    
+    .command-time {
+      font-size: var(--font-size-extra-small);
+      color: var(--text-color-secondary);
+      margin-top: 2px;
+    }
+  }
+}
